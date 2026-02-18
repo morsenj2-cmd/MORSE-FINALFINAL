@@ -127,10 +127,10 @@ app.post("/internal/weekly-engagement-email", async (req, res) => {
         to: user.email,
         subject: "Weekly check-in — Morse",
         html: `
-          <h2>See what's new on Morse</h2>
-          <p>New discussions and opportunities are waiting.</p>
-          <a href="https://morse.co.in">Open Morse</a>
-        `
+         <h2>See what's new on Morse</h2>
+         <p>New discussions and opportunities are waiting.</p>
+         <a href="https://morse.co.in">Open Morse</a>
+         `,
       });
     }
 
