@@ -115,6 +115,33 @@ app.use((req, res, next) => {
   // Other ports are firewalled. Default to 5000 if not specified.
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
+
+app.post("/internal/weekly-engagement-email", async (req, res) => {
+  try {
+    const users = await db.user.findMany({
+      where: { email: { not: null } }
+    });
+
+    for (const user of users) {
+      await sendEmail({
+        to: user.email,
+        subject: "Weekly check-in — Morse",
+        html: `
+          <h2>See what's new on Morse</h2>
+          <p>New discussions and opportunities are waiting.</p>
+          <a href="https://morse.co.in">Open Morse</a>
+        `
+      });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed weekly email job" });
+  }
+});
+
+
   const port = parseInt(process.env.PORT || "5000", 10);
 
   server.listen(port, () => {
