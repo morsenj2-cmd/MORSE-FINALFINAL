@@ -3,10 +3,13 @@ console.log("CLERK_SECRET_KEY exists:", Boolean(process.env.CLERK_SECRET_KEY));
 console.log("CLERK_PUBLISHABLE_KEY exists:", Boolean(process.env.CLERK_PUBLISHABLE_KEY));
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
+import { Resend } from "resend";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedTagsIfEmpty } from "./storage";
 import { pool } from "./db";
 import path from "path";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 
