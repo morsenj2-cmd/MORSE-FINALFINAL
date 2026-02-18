@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTags, useCurrentUser, useUpdateUser } from "@/lib/api";
 import { Check, X, MapPin } from "lucide-react";
+import AuthGate from "../AuthGate";
 
 const MIN_TAGS = 5;
 const MAX_TAGS = 5;
@@ -81,9 +82,11 @@ export const OnboardingTagsPage = (): JSX.Element => {
 
   if (userLoading || tagsLoading) {
     return (
-      <div className="bg-[#1a1a1a] w-full min-h-screen flex items-center justify-center">
+    <AuthGate> 
+     <div className="bg-[#1a1a1a] w-full min-h-screen flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full"></div>
       </div>
+    <AuthGate>
     );
   }
 
