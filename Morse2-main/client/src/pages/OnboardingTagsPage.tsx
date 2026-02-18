@@ -86,7 +86,7 @@ export const OnboardingTagsPage = (): JSX.Element => {
      <div className="bg-[#1a1a1a] w-full min-h-screen flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full"></div>
       </div>
-    <AuthGate>
+    </AuthGate>
     );
   }
 
