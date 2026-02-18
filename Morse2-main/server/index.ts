@@ -126,15 +126,17 @@ app.post("/internal/weekly-engagement-email", async (req, res) => {
     });
 
     for (const user of users) {
-      await sendEmail({
-        to: user.email,
-        subject: "Weekly check-in — Morse",
-        html: `
-         <h2>See what's new on Morse</h2>
-         <p>New discussions and opportunities are waiting.</p>
-         <a href="https://morse.co.in">Open Morse</a>
-         `,
-      });
+      await resend.emails.send({
+  from: "Morse <noreply@morse.co.in>",
+  to: user.email,
+  subject: "Weekly check-in — Morse",
+  html: `
+    <h2>See what's new on Morse</h2>
+    <p>New discussions and opportunities are waiting.</p>
+    <a href="https://morse.co.in">Open Morse</a>
+  `,
+});
+
     }
 
     res.json({ success: true });
