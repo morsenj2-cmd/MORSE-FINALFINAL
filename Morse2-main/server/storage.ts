@@ -2,7 +2,7 @@ import {
   users, tags, userTags, posts, postTags, communities, communityTags, 
   communityMembers, follows, likes, comments, launches, launchTags, launchUpvotes,
   conversations, messages, threads, threadComments,
-  broadcasts, broadcastTags, broadcastRecipients, blogPosts,
+  broadcasts, broadcastTags, broadcastRecipients, blogPosts, notifications,
   type User, type InsertUser, type Tag, type InsertTag, 
   type Post, type InsertPost, type Community, type InsertCommunity,
   type Follow, type InsertFollow, type Launch, type InsertLaunch,
@@ -107,6 +107,19 @@ export interface IStorage {
   getBlogPostBySlug(slug: string): Promise<(BlogPost & { author: User }) | undefined>;
   createBlogPost(blogPost: InsertBlogPost): Promise<BlogPost>;
   deleteBlogPost(id: string): Promise<void>;
+
+  // Notifications
+  createNotification(data: {
+  recipientId: string;
+  actorId: string;
+  type: string;
+  entityId: string;
+  }): Promise<void>;
+
+  getUserNotifications(userId: string): Promise<any[]>;
+
+  markNotificationRead(id: string): Promise<void>; 
+
 }
 
 export class DatabaseStorage implements IStorage {
@@ -134,6 +147,36 @@ export class DatabaseStorage implements IStorage {
   async updateUser(id: string, data: Partial<InsertUser>): Promise<User | undefined> {
     const [user] = await db.update(users).set(data).where(eq(users.id, id)).returning();
     return user || undefined;
+  }
+
+ // Notifications
+ async createNotification(data: {
+    recipientId: string;
+    actorId: string;
+    type: string;
+    entityId: string;
+  }): Promise<void> {
+    await db.insert(notifications).values({
+      recipientId: data.recipientId,
+      actorId: data.actorId,
+      type: data.type,
+      entityId: data.entityId,
+    });
+  }
+
+  async getUserNotifications(userId: string): Promise<any[]> {
+    return db
+      .select()
+      .from(notifications)
+      .where(eq(notifications.recipientId, userId))
+      .orderBy(desc(notifications.createdAt));
+  }
+
+  async markNotificationRead(id: string): Promise<void> {
+    await db
+      .update(notifications)
+      .set({ read: true })
+      .where(eq(notifications.id, id));
   }
 
   // Tags

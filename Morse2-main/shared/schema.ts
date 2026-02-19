@@ -357,3 +357,24 @@ export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
 export type Broadcast = typeof broadcasts.$inferSelect;
 export type InsertBroadcast = z.infer<typeof insertBroadcastSchema>;
+
+ // Notifications
+ export const notifications = pgTable("notifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+
+  recipientId: varchar("recipient_id")
+    .notNull()
+    .references(() => users.id),
+
+  actorId: varchar("actor_id")
+    .notNull()
+    .references(() => users.id),
+
+  type: text("type").notNull(),
+
+  entityId: varchar("entity_id").notNull(),
+
+  read: boolean("read").default(false),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
