@@ -647,17 +647,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       await storage.likePost(req.params.id, user.id);
 
-      // Get the post
-const post = await storage.getPost(req.params.id);
+      console.log("LIKE ROUTE HIT");
 
-if (post && post.authorId !== user.id) {
-  await storage.createNotification({
+  // Get the post
+  const post = await storage.getPost(req.params.id);
+    if (post && post.authorId !== user.id) {
+    await storage.createNotification({
     recipientId: post.authorId,
     actorId: user.id,
     type: "like",
     entityId: post.id,
-  });
-}
+   });
+ }
 
 
       res.json({ success: true });
