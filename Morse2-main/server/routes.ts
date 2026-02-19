@@ -646,6 +646,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!user) return res.status(404).json({ message: "User not found" });
 
       await storage.likePost(req.params.id, user.id);
+
+      // Get the post
+const post = await storage.getPost(req.params.id);
+
+if (post && post.authorId !== user.id) {
+  await storage.createNotification({
+    recipientId: post.authorId,
+    actorId: user.id,
+    type: "like",
+    entityId: post.id,
+  });
+}
+
+
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
