@@ -702,7 +702,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { content } = req.body;
       const comment = await storage.addPostComment(req.params.id, user.id, content);
-      res.json(comment);
+
+   // Get the post to know who owns it
+    const post = await storage.getPost(req.params.id);
+ 
+    if (post && post.authorId !== user.id) {
+     await storage.createNotification({
+     recipientId: post.authorId,
+     actorId: user.id,
+     type: "comment",
+     entityId: post.id,
+   });
+ }
+
+     res.json(comment);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
