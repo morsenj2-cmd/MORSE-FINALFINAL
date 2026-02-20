@@ -914,8 +914,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      const message = await storage.sendMessage(req.params.id, user.id, content);
-      res.json(message);
+      const conversationId = req.params.id;
+
+const message = await storage.sendMessage(conversationId, user.id, content);
+
+// Get conversation
+const conversation = await storage.getConversationById(conversationId);
+
+// Determine recipient
+const recipientId =
+  conversation.participant1Id === user.id
+    ? conversation.participant2Id
+    : conversation.participant1Id;
+
+if (recipientId !== user.id) {
+  await storage.createNotification({
+    recipientId,
+    actorId: user.id,
+    type: "message",
+    entityId: conversationId,
+  });
+}
+
+res.json(message);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
