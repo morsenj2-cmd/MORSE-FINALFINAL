@@ -630,6 +630,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { content } = req.body;
       const comment = await storage.addLaunchComment(req.params.id, user.id, content);
+
+      // Get launch owner
+      const launch = await storage.getLaunch(req.params.id);
+
+      if (launch && launch.authorId !== user.id) {
+      await storage.createNotification({
+      recipientId: launch.authorId,
+      actorId: user.id,
+      type: "comment",
+      entityId: launch.id,
+    });
+  }
+
       res.json(comment);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
