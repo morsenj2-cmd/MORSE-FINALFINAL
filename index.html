@@ -1,0 +1,1203 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferrari Scuderia Cinematica</title>
+    <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;rect width='100' height='100' rx='20' fill='%23000'/&gt;&lt;text x='50%' y='50%' font-family='sans-serif' font-size='60' font-weight='bold' fill='%23fff' text-anchor='middle' dominant-baseline='central'&gt;F&lt;/text&gt;&lt;/svg&gt;">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Ligh/High-Fashion Theme to ensure #000 pops with > 4.5:1 contrast */
+            --color-primary: #000; /* LOCKED - Main accent, buttons, key text */
+            --color-secondary: #e5e5e5; /* Subtle silver/grey for secondary elements */
+            --color-accent: #d1d5db; /* Slightly darker grey for borders/dividers */
+            
+            --color-bg: #ffffff; /* Stark white for high-fashion editorial feel */
+            --color-surface: #f8f9fa; /* Off-white for cards/panels */
+            
+            --color-text: #000000; /* Solid black for primary reading text */
+            --color-text-muted: #6b7280; /* Elegant grey for secondary text */
+            --color-border: #e5e7eb;
+            
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            
+            --font-heading: 'Inter', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.15);
+            
+            --hero-overlay: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Views */
+        .view {
+            display: none;
+            width: 100%;
+        }
+        .view.active {
+            display: block;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Base styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            line-height: 1.75;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            font-weight: 800;
+            line-height: 1.2;
+            text-transform: uppercase; /* Matching reference style */
+        }
+
+        /* Emulating the wide, cinematic font from the reference using Inter */
+        .cinematic-heading {
+            letter-spacing: 0.15em;
+            font-weight: 700;
+        }
+
+        h1 { font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: 0.1em; }
+        h2 { font-size: clamp(2rem, 4vw, 3.5rem); letter-spacing: 0.05em; }
+        h3 { font-size: clamp(1.25rem, 2vw, 1.75rem); letter-spacing: 0.05em; }
+        p { color: var(--color-text-muted); font-size: 1.05rem; }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Buttons */
+        button, .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            white-space: nowrap;
+            background-color: var(--color-primary);
+            color: #ffffff;
+            box-shadow: var(--shadow-md);
+        }
+
+        button:hover, .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background-color: #222;
+        }
+
+        button:focus-visible, .button:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-primary);
+            color: #ffffff;
+        }
+
+        /* Utility classes */
+        .container {
+            max-width: 1400px; /* Wider container for editorial feel */
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .text-center { text-align: center; }
+        .grid { display: grid; }
+        .flex { display: flex; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+        ::selection { background: var(--color-primary); color: #ffffff; }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.85); /* Light glassmorphism */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.25rem 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Dark nav variant for when over the hero */
+        .nav.nav-transparent {
+            background-color: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .nav.nav-transparent .nav-links a { color: #ffffff; }
+        .nav.nav-transparent .nav-brand span { color: #ffffff; }
+        .nav.nav-transparent .hamburger span { background-color: #ffffff; }
+
+        .nav > .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-brand span {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--color-primary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            color: var(--color-primary);
+            font-size: 0.8125rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-toggle { display: none; }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 0;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://loremflickr.com/2070/1380/ferrari,dark?lock=1'); /* High quality dark cinematic car texture */
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            transform: scale(1.05);
+            animation: slowZoom 20s ease-out forwards;
+        }
+
+        @keyframes slowZoom {
+            to { transform: scale(1); }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+            color: #ffffff;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s 0.5s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            color: #ffffff;
+            margin-bottom: 0;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            color: rgba(255,255,255,0.8);
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: 0;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 24px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .hero-cta:hover { opacity: 0.8; }
+        
+        .hero-cta-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .hero-cta:hover .hero-cta-icon {
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-header h2 {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background-color: var(--color-primary);
+        }
+
+        /* Portfolio / Application Section */
+        .portfolio-section {
+            background-color: var(--color-surface);
+        }
+
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .car-card {
+            background: var(--color-bg);
+            border-radius: var(--radius-sm); /* Sharp editorial look */
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid var(--color-border);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--color-primary);
+        }
+
+        .car-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 66%; /* 3:2 Aspect Ratio */
+            overflow: hidden;
+            background-color: #eee;
+        }
+
+        .car-image-wrapper img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .car-card:hover .car-image-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .car-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-meta {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .car-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+        
+        .car-specs {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .car-specs span {
+            background: var(--color-surface);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--color-border);
+            white-space: nowrap;
+        }
+
+        .car-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .car-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            border-top: 1px solid var(--color-border);
+            padding-top: 1.5rem;
+        }
+
+        .car-actions button {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        /* Editorial Feature Section */
+        .editorial {
+            background-color: var(--color-bg);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .editorial-image {
+            position: relative;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .editorial-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .editorial-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .editorial-content p {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-text); /* Darker text for editorial feel */
+        }
+
+        /* Admin Section */
+        .admin-section {
+            background-color: var(--color-primary);
+            color: #ffffff;
+            padding: 6rem 0;
+        }
+
+        .admin-section h2, .admin-section p { color: #ffffff; }
+        .admin-section h2::after { background-color: #ffffff; }
+        .admin-section .text-muted { color: rgba(255,255,255,0.6); }
+
+        .admin-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            padding: 3rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group.full-width { grid-column: 1 / -1; }
+
+        .admin-form label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .admin-form input, .admin-form textarea, .admin-form select {
+            width: 100%;
+            padding: 1rem;
+            background-color: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            transition: border-color 0.3s;
+        }
+
+        .admin-form input:focus, .admin-form textarea:focus {
+            outline: none;
+            border-color: #ffffff;
+        }
+
+        .admin-form button {
+            background-color: #ffffff;
+            color: var(--color-primary);
+            grid-column: 1 / -1;
+            margin-top: 1rem;
+            padding: 1.25rem;
+        }
+        .admin-form button:hover {
+            background-color: #e5e5e5;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            padding: 6rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-brand .nav-brand span { color: #ffffff; }
+        
+        .footer-brand p {
+            color: rgba(255,255,255,0.6);
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+
+        .footer h4 {
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover { color: #ffffff; padding-left: 5px; }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .toast {
+            background: var(--color-primary); color: #fff;
+            padding: 1rem 1.5rem; border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            font-size: 0.9rem; font-weight: 500;
+            animation: slideIn 0.3s ease forwards;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .toast.error { background: #dc2626; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: var(--radius-sm);
+        }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Inserted Image Container */
+        .inserted-image-container {
+            padding-top: 64px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        
+        .inserted-image-container img {
+            width: 320px;
+            height: 256px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .editorial-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .editorial-image { order: -1; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .inserted-image-container { padding-top: 48px; }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: var(--color-bg); flex-direction: column;
+                justify-content: center; align-items: center; transition: 0.3s;
+            }
+            .nav.nav-transparent .nav-links { background: #000; }
+            .nav-toggle:checked ~ .nav-links { right: 0; }
+            .hamburger { display: flex; z-index: 1001; }
+            .nav-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+            .nav-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+            .nav-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+            
+            .admin-form { grid-template-columns: 1fr; padding: 2rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .car-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .inserted-image-container {
+                justify-content: center;
+                padding-top: 32px;
+            }
+            .inserted-image-container img {
+                width: 100%;
+                max-width: 320px;
+                height: auto;
+                aspect-ratio: 5 / 4;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="container">
+            <a href="#" onclick="event.preventDefault(); window.app.navigate('home-view', 'hero')" class="nav-brand">
+                <img src="https://res.cloudinary.com/dla0c1ygb/image/upload/v1777206791/morse/logos/user_387E1jEKdzNsAihWlZaEt1WpsiA/logo_8cef0e3cdf44.png" alt="Ferrari Logo" style="height: 36px; width: auto; object-fit: contain; display: block;">
+                <span>Ferrari</span>
+            </a>
+            
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+            <label for="nav-toggle" class="hamburger">
+                <span></span><span></span><span></span>
+            </label>
+            
+            <ul class="nav-links">
+                <li><a href="#" onclick="event.preventDefault(); window.app.navigate('home-view', 'hero')">Experience</a></li>
+                <li><a href="#" onclick="event.preventDefault(); window.app.navigate('home-view', 'portfolio')">The Fleet</a></li>
+                <li><a href="#" onclick="event.preventDefault(); window.app.navigate('home-view', 'heritage')">Heritage</a></li>
+                <li><a href="#" onclick="event.preventDefault(); window.app.navigate('home-view', 'admin')">Configure</a></li>
+                <li><a href="#" onclick="event.preventDefault(); window.app.navigate('careers-view')">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HOME VIEW -->
+    <div id="home-view" class="view active">
+        <!-- Hero Section -->
+        <header id="hero" class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <h1 class="cinematic-heading">Scuderia Cinematica</h1>
+                <p>A bold narrative for a new era of performance.</p>
+                <div class="hero-cta" onclick="window.app.navigate('home-view', 'portfolio')">
+                    <span>Discover</span>
+                    <div class="hero-cta-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="container inserted-image-container">
+            <img src="https://res.cloudinary.com/dla0c1ygb/image/upload/v1777214033/morse/assets/user_387E1jEKdzNsAihWlZaEt1WpsiA/--__1777214033241.png" alt="--." data-morse-user-asset="1">
+        </div>
+
+        <main>
+            <!-- Application UI: Portfolio Fleet (CRUD Read/Delete) -->
+            <section id="portfolio" class="portfolio-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>The Cinematic Fleet</h2>
+                        <p>Explore our curated collection of iconic vehicles. Data is live and synchronized with the central Scuderia database.</p>
+                    </div>
+
+                    <div class="controls-bar">
+                        <div style="font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.875rem;">
+                            Total Vehicles: <span id="vehicle-count">6</span>
+                        </div>
+                        <button class="button" onclick="window.app.navigate('home-view', 'admin')">
+                            Add Vehicle
+                        </button>
+                    </div>
+
+                    <div id="car-grid" class="car-grid">
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20500%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1000%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url(%23g1000)%22%2F%3E%3Ccircle%20cx%3D%22133%22%20cy%3D%22162%22%20r%3D%22225%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22535%22%20cy%3D%22395%22%20r%3D%22175%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(275%20125)%20scale(1.5625)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Ferrari 12Cilindri" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Sports Cars</span>
+                                    <span>6.5L NA V12</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem;">Ferrari 12Cilindri</h3>
+                                <div class="car-specs">
+                                    <span>830 cv</span><span>0-100 km/h: 2.9s</span><span>V-Max: &gt;340 km/h</span>
+                                </div>
+                                <p class="car-desc">The Ferrari 12Cilindri is the latest evolution of Maranello's uncompromising front-mid-engine V12 two-seater berlinetta, combining timeless elegance with raw atmospheric power.</p>
+                                <div class="car-actions">
+                                    <button class="button btn-outline" onclick="window.app.viewDetails('08038fcb-5312-45ed-b51d-7de9693bcc83')">View Details</button>
+                                    <button class="button" style="background:#dc2626; color:white; border:none;" onclick="window.app.deleteCar('08038fcb-5312-45ed-b51d-7de9693bcc83')">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20500%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1001%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url(%23g1001)%22%2F%3E%3Ccircle%20cx%3D%22139%22%20cy%3D%22145%22%20r%3D%22225%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22694%22%20cy%3D%22422%20r%3D%22175%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(275%20125)%20scale(1.5625)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Ferrari 296 GTB" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Sports Cars</span>
+                                    <span>2.9L Twin-Turbo V6 Hybrid</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem;">Ferrari 296 GTB</h3>
+                                <div class="car-specs">
+                                    <span>830 cv</span><span>0-100 km/h: 2.9s</span><span>V-Max: &gt;330 km/h</span>
+                                </div>
+                                <p class="car-desc">An evolution of Ferrari's mid-rear-engined two-seater berlinetta concept, introducing a revolutionary 120° V6 engine coupled with a plug-in electric motor.</p>
+                                <div class="car-actions">
+                                    <button class="button btn-outline" onclick="window.app.viewDetails('ccc20169-b441-4d88-b1ff-28fe014b975a')">View Details</button>
+                                    <button class="button" style="background:#dc2626; color:white; border:none;" onclick="window.app.deleteCar('ccc20169-b441-4d88-b1ff-28fe014b975a')">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20500%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1002%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url(%23g1002)%22%2F%3E%3Ccircle%20cx%3D%22146%22%20cy%3D%22129%22%20r%3D%22225%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22653%22%20cy%3D%22324%22%20r%3D%22175%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(275%20125)%20scale(1.5625)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Ferrari SF90 Stradale" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Hypercars</span>
+                                    <span>4.0L Twin-Turbo V8 Hybrid</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem;">Ferrari SF90 Stradale</h3>
+                                <div class="car-specs">
+                                    <span>1000 cv</span><span>0-100 km/h: 2.5s</span><span>V-Max: 340 km/h</span>
+                                </div>
+                                <p class="car-desc">The SF90 Stradale is the first ever Ferrari to feature PHEV architecture, integrating the internal combustion engine with three electric motors for unprecedented performance.</p>
+                                <div class="car-actions">
+                                    <button class="button btn-outline" onclick="window.app.viewDetails('11c93bdc-61a2-45a8-ae35-4bee05d6c6db')">View Details</button>
+                                    <button class="button" style="background:#dc2626; color:white; border:none;" onclick="window.app.deleteCar('11c93bdc-61a2-45a8-ae35-4bee05d6c6db')">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20500%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1003%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url(%23g1003)%22%2F%3E%3Ccircle%20cx%3D%22152%22%20cy%3D%22113%22%20r%3D%22225%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22612%22%20cy%3D%22351%22%20r%3D%22175%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(275%20125)%20scale(1.5625)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Ferrari Purosangue" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Sports Cars</span>
+                                    <span>6.5L NA V12</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem;">Ferrari Purosangue</h3>
+                                <div class="car-specs">
+                                    <span>725 cv</span><span>0-100 km/h: 3.3s</span><span>V-Max: &gt;310 km/h</span>
+                                </div>
+                                <p class="car-desc">The Purosangue is the first ever four-door, four-seater car in Ferrari's history, blending peerless comfort with the signature thrill of a naturally aspirated V12.</p>
+                                <div class="car-actions">
+                                    <button class="button btn-outline" onclick="window.app.viewDetails('cb6ae1ea-6a31-48df-b856-91b4c40a9777')">View Details</button>
+                                    <button class="button" style="background:#dc2626; color:white; border:none;" onclick="window.app.deleteCar('cb6ae1ea-6a31-48df-b856-91b4c40a9777')">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20500%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1004%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url(%23g1004)%22%2F%3E%3Ccircle%20cx%3D%22159%22%20cy%3D%22196%22%20r%3D%22225%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22572%22%20cy%3D%22378%22%20r%3D%22175%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(275%20125)%20scale(1.5625)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Ferrari Roma" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Sports Cars</span>
+                                    <span>3.9L Twin-Turbo V8</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem;">Ferrari Roma</h3>
+                                <div class="car-specs">
+                                    <span>620 cv</span><span>0-100 km/h: 3.4s</span><span>V-Max: &gt;320 km/h</span>
+                                </div>
+                                <p class="car-desc">The Ferrari Roma features refined proportions and timeless design combined with unparalleled performance and handling, representing 'La Nuova Dolce Vita'.</p>
+                                <div class="car-actions">
+                                    <button class="button btn-outline" onclick="window.app.viewDetails('cc36c931-c2a3-4d6a-928d-d3bcddd656dd')">View Details</button>
+                                    <button class="button" style="background:#dc2626; color:white; border:none;" onclick="window.app.deleteCar('cc36c931-c2a3-4d6a-928d-d3bcddd656dd')">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20500%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1005%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22url(%23g1005)%22%2F%3E%3Ccircle%20cx%3D%22165%22%20cy%3D%22180%22%20r%3D%22225%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22531%22%20cy%3D%22405%22%20r%3D%22175%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(275%20125)%20scale(1.5625)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Lancia" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Heritage</span>
+                                    <span>3 cylinder</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem;">Lancia</h3>
+                                <div class="car-specs">
+                                    <span>0-100 in 2 hours</span>
+                                </div>
+                                <p class="car-desc">dfdfgdf</p>
+                                <div class="car-actions">
+                                    <button class="button btn-outline" onclick="window.app.viewDetails('f7d5d914-e3c6-4dc5-889f-a69790fcd8f8')">View Details</button>
+                                    <button class="button" style="background:#dc2626; color:white; border:none;" onclick="window.app.deleteCar('f7d5d914-e3c6-4dc5-889f-a69790fcd8f8')">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="empty-state" style="display: none; text-align: center; padding: 4rem 0px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 1rem;"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M7 3v18"></path><path d="M3 7.5h4"></path><path d="M3 12h18"></path><path d="M3 16.5h4"></path><path d="M17 3v18"></path><path d="M17 7.5h4"></path><path d="M17 16.5h4"></path></svg>
+                        <h3 style="color: var(--color-text-muted); margin-bottom: 1rem;">The fleet is currently empty.</h3>
+                        <p>Configure a new vehicle in the section below to populate the database.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Editorial Section (High Fashion layout) -->
+            <section id="heritage" class="editorial">
+                <div class="container">
+                    <div class="editorial-grid">
+                        <div class="editorial-content fade-up">
+                            <h2 class="cinematic-heading">Unparalleled<br>Legacy</h2>
+                            <p>Every line, every curve, and every roar of the engine is a testament to a legacy forged on the track. Scuderia Cinematica brings this heritage to the digital realm.</p>
+                            <p>Experience the visceral thrill of our most iconic models through interactive 3D explorations and synchronized audio landscapes that react to your journey.</p>
+                            <br>
+                            <a href="https://www.youtube.com/watch?v=QG5laUSuyCA" target="_blank" rel="noopener noreferrer" class="button btn-outline">Experience The Film</a>
+                        </div>
+                        <div class="editorial-image fade-up">
+                            <!-- Using loremflickr with specific keywords for a high-end automotive feel -->
+                            <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%201000%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1006%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(224%2C224%2C224)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(140%2C140%2C140)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%221000%22%20fill%3D%22url(%23g1006)%22%2F%3E%3Ccircle%20cx%3D%22171%22%20cy%3D%22327%22%20r%3D%22360%22%20fill%3D%22rgb(140%2C140%2C140)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22690%22%20cy%3D%22613%22%20r%3D%22280%22%20fill%3D%22rgb(0%2C0%2C0)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(200%20300)%20scale(2.5)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(140%2C140%2C140)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(0%2C0%2C0)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Ferrari Heritage Legacy">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Section (CRUD Create) -->
+            <section id="admin" class="admin-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Configure Vehicle</h2>
+                        <p class="text-muted">Authorized personnel only. Add a new model to the Scuderia Cinematica database.</p>
+                    </div>
+
+                    <form id="add-car-form" class="admin-form" onsubmit="window.app.handleAddCar(event)">
+                        <div class="form-group full-width">
+                            <label for="car-name">Model Designation</label>
+                            <input type="text" id="car-name" required="" placeholder="e.g., Ferrari Daytona SP3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="car-era">Era / Category</label>
+                            <select id="car-era" required="">
+                                <option value="Icona Series">Icona Series</option>
+                                <option value="Sports Cars">Sports Cars</option>
+                                <option value="Hypercars">Hypercars</option>
+                                <option value="Heritage">Heritage / Classic</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="car-engine">Powertrain</label>
+                            <input type="text" id="car-engine" required="" placeholder="e.g., Naturally Aspirated V12">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="car-specs">Key Specifications (Separate with •)</label>
+                            <input type="text" id="car-specs" required="" placeholder="e.g., 830 cv • 0-100 km/h: 2.9s • V-Max: &gt;340 km/h">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="car-desc">Cinematic Description</label>
+                            <textarea id="car-desc" rows="3" required="" placeholder="Describe the soul and design philosophy..."></textarea>
+                        </div>
+
+                        <button type="submit" id="submit-btn">Add to Database</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- CAREERS VIEW -->
+    <div id="careers-view" class="view">
+        <header class="hero" style="height: 60vh; min-height: 400px; padding-bottom: 4rem;">
+            <div class="hero-bg" style="background-image: url('https://loremflickr.com/2070/1380/ferrari,factory?lock=2'); animation: slowZoom 20s ease-out forwards;"></div>
+            <div class="hero-content">
+                <h1 class="cinematic-heading">Join Us</h1>
+                <p>Forge the future of automotive excellence.</p>
+            </div>
+        </header>
+        
+        <main>
+            <section class="portfolio-section" style="padding-top: 4rem;">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Open Positions</h2>
+                        <p>Discover career opportunities in Maranello and worldwide.</p>
+                    </div>
+                    <div class="car-grid" id="jobs-grid">
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper" style="padding-top: 50%;">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1006%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22url(%23g1006)%22%2F%3E%3Ccircle%20cx%3D%22171%22%20cy%3D%22131%22%20r%3D%22180%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22690%22%20cy%3D%22245%22%20r%3D%22140%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(300%20100)%20scale(1.25)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Aerodynamics Engineer" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Gestione Sportiva (F1)</span>
+                                    <span>Maranello, Italy</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem; font-size: 1.25rem;">Aerodynamics Engineer</h3>
+                                <div class="car-specs">
+                                    <span>Full-time</span>
+                                </div>
+                                <p class="car-desc">Design and optimize aerodynamic components for the Scuderia Ferrari F1 car. Wind tunnel testing and CFD analysis.</p>
+                                <div class="car-actions">
+                                    <button class="button" style="width: 100%;" onclick="window.app.openApply('j1')">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper" style="padding-top: 50%;">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1007%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22url(%23g1007)%22%2F%3E%3Ccircle%20cx%3D%22178%22%20cy%3D%22118%22%20r%3D%22180%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22649%22%20cy%3D%22267%22%20r%3D%22140%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(300%20100)%20scale(1.25)%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C10%20150%2C90%2080%2C150%2010%2C90%22%20fill%3D%22rgb(185%2C186%2C249)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cpolygon%20points%3D%2280%2C40%20120%2C90%2080%2C130%2040%2C90%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2290%22%20r%3D%2214%22%20fill%3D%22%23ffffff%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Lead Vehicle Dynamics Engineer" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>GT Cars</span>
+                                    <span>Maranello, Italy</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem; font-size: 1.25rem;">Lead Vehicle Dynamics Engineer</h3>
+                                <div class="car-specs">
+                                    <span>Full-time</span>
+                                </div>
+                                <p class="car-desc">Lead the development of suspension, steering, and active chassis control systems for next-generation sports cars.</p>
+                                <div class="car-actions">
+                                    <button class="button" style="width: 100%;" onclick="window.app.openApply('j2')">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper" style="padding-top: 50%;">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1008%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22url(%23g1008)%22%2F%3E%3Ccircle%20cx%3D%22184%22%20cy%3D%22105%22%20r%3D%22180%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22608%22%20cy%3D%22288%22%20r%3D%22140%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(300%20100)%20scale(1.25)%22%20stroke-linecap%3D%22round%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2260%22%20fill%3D%22none%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%226%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2234%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2210%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2220%22%20cy%3D%2280%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22140%22%20cy%3D%2280%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2220%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%22140%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2228%22%20y1%3D%2280%22%20x2%3D%2268%22%20y2%3D%2280%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2292%22%20y1%3D%2280%22%20x2%3D%22132%22%20y2%3D%2280%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%2228%22%20x2%3D%2280%22%20y2%3D%2268%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%2292%22%20x2%3D%2280%22%20y2%3D%22132%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Powertrain Calibration Specialist" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Hybrid Systems</span>
+                                    <span>Maranello, Italy</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem; font-size: 1.25rem;">Powertrain Calibration Specialist</h3>
+                                <div class="car-specs">
+                                    <span>Full-time</span>
+                                </div>
+                                <p class="car-desc">Develop and calibrate control strategies for high-performance V6/V8 hybrid powertrains to ensure seamless power delivery.</p>
+                                <div class="car-actions">
+                                    <button class="button" style="width: 100%;" onclick="window.app.openApply('j3')">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper" style="padding-top: 50%;">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1009%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22url(%23g1009)%22%2F%3E%3Ccircle%20cx%3D%22191%22%20cy%3D%2291%22%20r%3D%22180%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22567%22%20cy%3D%22310%22%20r%3D%22140%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(300%20100)%20scale(1.25)%22%20stroke-linecap%3D%22round%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2260%22%20fill%3D%22none%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%226%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2234%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2210%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2220%22%20cy%3D%2280%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22140%22%20cy%3D%2280%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2220%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%22140%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2228%22%20y1%3D%2280%22%20x2%3D%2268%22%20y2%3D%2280%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2292%22%20y1%3D%2280%22%20x2%3D%22132%22%20y2%3D%2280%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%2228%22%20x2%3D%2280%22%20y2%3D%2268%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%2292%22%20x2%3D%2280%22%20y2%3D%22132%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Tailor Made Design Consultant" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Design &amp; Personalization</span>
+                                    <span>New York, USA</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem; font-size: 1.25rem;">Tailor Made Design Consultant</h3>
+                                <div class="car-specs">
+                                    <span>Full-time</span>
+                                </div>
+                                <p class="car-desc">Guide exclusive clients through the bespoke personalization process of their Ferrari, selecting materials and finishes.</p>
+                                <div class="car-actions">
+                                    <button class="button" style="width: 100%;" onclick="window.app.openApply('j4')">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-card fade-up">
+                            <div class="car-image-wrapper" style="padding-top: 50%;">
+                                <img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22xMidYMid%20slice%22%20role%3D%22img%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g1010%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(236%2C237%2C253)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(185%2C186%2C249)%22%20stop-opacity%3D%220.65%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22url(%23g1010)%22%2F%3E%3Ccircle%20cx%3D%22197%22%20cy%3D%22158%22%20r%3D%22180%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%3Ccircle%20cx%3D%22526%22%20cy%3D%22331%22%20r%3D%22140%22%20fill%3D%22rgb(54%2C56%2C133)%22%20opacity%3D%220.35%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22translate(300%20100)%20scale(1.25)%22%20stroke-linecap%3D%22round%22%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2260%22%20fill%3D%22none%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%226%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2234%22%20fill%3D%22rgb(185%2C186%2C249)%22%20opacity%3D%220.45%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2280%22%20r%3D%2210%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2220%22%20cy%3D%2280%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22140%22%20cy%3D%2280%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%2220%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%2280%22%20cy%3D%22140%22%20r%3D%228%22%20fill%3D%22rgb(54%2C56%2C133)%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2228%22%20y1%3D%2280%22%20x2%3D%2268%22%20y2%3D%2280%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2292%22%20y1%3D%2280%22%20x2%3D%22132%22%20y2%3D%2280%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%2228%22%20x2%3D%2280%22%20y2%3D%2268%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%3Cline%20x1%3D%2280%22%20y1%3D%2292%22%20x2%3D%2280%22%20y2%3D%22132%22%20stroke%3D%22rgb(54%2C56%2C133)%22%20stroke-width%3D%224%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%3C%2Fsvg%3E" alt="Scuderia Software Engineer" loading="lazy">
+                            </div>
+                            <div class="car-content">
+                                <div class="car-meta">
+                                    <span>Telemetry &amp; Data</span>
+                                    <span>Maranello, Italy</span>
+                                </div>
+                                <h3 class="car-title" style="margin-bottom: 0.5rem; font-size: 1.25rem;">Scuderia Software Engineer</h3>
+                                <div class="car-specs">
+                                    <span>Full-time</span>
+                                </div>
+                                <p class="car-desc">Build real-time telemetry pipelines and analytics dashboards used by race engineers on the pit wall.</p>
+                                <div class="car-actions">
+                                    <button class="button" style="width: 100%;" onclick="window.app.openApply('j5')">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="apply-section" class="admin-section" style="display:none;">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Submit Application</h2>
+                        <p class="text-muted" id="apply-job-title">Applying for...</p>
+                    </div>
+                    <form id="apply-form" class="admin-form" onsubmit="window.app.handleApply(event)">
+                        <input type="hidden" id="apply-job-id">
+                        <div class="form-group full-width">
+                            <label for="apply-name">Full Name</label>
+                            <input type="text" id="apply-name" required="" placeholder="e.g., Enzo Ferrari">
+                        </div>
+                        <div class="form-group">
+                            <label for="apply-email">Email</label>
+                            <input type="email" id="apply-email" required="" placeholder="enzo@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="apply-url">LinkedIn Profile / Portfolio</label>
+                            <input type="url" id="apply-url" required="" placeholder="https://...">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="apply-cover">Cover Letter</label>
+                            <textarea id="apply-cover" rows="4" required="" placeholder="Why Ferrari?"></textarea>
+                        </div>
+                        <button type="submit">Submit Application</button>
+                        <button type="button" style="background-color: transparent; border: 1px solid #fff; color: #fff; margin-top: 0;" onmouseover="this.style.backgroundColor='#fff'; this.style.color='#000';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#fff';" onclick="document.getElementById('apply-section').style.display='none'">Cancel</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" onclick="event.preventDefault(); window.app.navigate('home-view', 'hero')" class="nav-brand">
+                        <img src="https://res.cloudinary.com/dla0c1ygb/image/upload/v1777206791/morse/logos/user_387E1jEKdzNsAihWlZaEt1WpsiA/logo_8cef0e3cdf44.png" alt="Ferrari" style="height:30px;width:auto;object-fit:contain;display:block; filter: brightness(0) invert(1);">
+                        <span>Ferrari</span>
+                    </a>
+                    <p>Scuderia Cinematica is an immersive digital portfolio celebrating a legacy of performance, luxury, and Italian design.</p>
+                </div>
+                
+                <div>
+                    <h4>Models</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">Sports Cars</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">GT Collection</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">Special Series</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">Icona</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4>Experience</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="event.preventDefault(); window.app.navigate('home-view', 'heritage');">Racing Heritage</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">Tailor Made</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.app.navigate('careers-view');">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">Privacy Policy</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">Cookie Policy</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.app.showToast('Coming soon.', 'info');">Terms of Use</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>© <span id="year">2026</span> Ferrari S.p.A. All rights reserved.</div>
+                <div style="display:flex; gap:1rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    
+
+
+
+
+
+
+
+
+</body></html>
